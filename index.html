@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基金 MBTI 小测试 ✨</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 外层容器：马卡龙背景 + 动效层 -->
+    <div class="pastel-background">
+        <!-- 背景动效层（泡泡、光斑等） -->
+        <div class="bg-effects" aria-hidden="true"></div>
+
+        <!-- 主卡片：整个测试的内容都在这里 -->
+        <div class="container main-card">
+        <!-- 顶部进度条区域 -->
+        <div class="progress-section">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="step-indicator">
+                <span id="currentStep">1</span> / 4
+            </div>
+        </div>
+
+        <!-- 错误提示区域（默认隐藏） -->
+        <div class="error-message" id="errorMessage"></div>
+
+        <!-- ==================== Step 1: 关于你 ==================== -->
+        <div class="step active" id="step1">
+            <div class="step-content">
+                <h1 class="step-title page-title">先认识一下你自己 <span class="title-emoji">✨</span></h1>
+                <p class="step-hint">不知道 MBTI 也没关系，可以随便选一个先玩玩～</p>
+
+                <!-- 昵称输入 -->
+                <div class="form-group">
+                    <label class="form-label">你的昵称 🏷️</label>
+                    <input type="text" id="nickname" class="text-input" placeholder="输入你的昵称...">
+                </div>
+
+                <!-- MBTI 选择 -->
+                <div class="form-group">
+                    <label class="form-label">你的 MBTI 类型 🧠</label>
+                    <select id="mbti" class="select-input">
+                        <option value="">请选择...</option>
+                        <option value="ISTJ">ISTJ - 守卫者</option>
+                        <option value="ISFJ">ISFJ - 守护者</option>
+                        <option value="INFJ">INFJ - 提倡者</option>
+                        <option value="INTJ">INTJ - 建筑师</option>
+                        <option value="ISTP">ISTP - 手艺人</option>
+                        <option value="ISFP">ISFP - 探险家</option>
+                        <option value="INFP">INFP - 调停者</option>
+                        <option value="INTP">INTP - 逻辑学家</option>
+                        <option value="ESTP">ESTP - 企业家</option>
+                        <option value="ESFP">ESFP - 表演者</option>
+                        <option value="ENFP">ENFP - 竞选者</option>
+                        <option value="ENTP">ENTP - 辩论家</option>
+                        <option value="ESTJ">ESTJ - 总经理</option>
+                        <option value="ESFJ">ESFJ - 执政官</option>
+                        <option value="ENFJ">ENFJ - 主人公</option>
+                        <option value="ENTJ">ENTJ - 指挥官</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== Step 2: 小测试 ==================== -->
+        <div class="step" id="step2">
+            <div class="step-content">
+                <h1 class="step-title page-title">投资性格小测试 <span class="title-emoji">🧸</span></h1>
+                <p class="step-hint">通过几道有趣的问题，我们来发现你的投资性格～</p>
+
+                <!-- 题目容器（由 JS 动态填充） -->
+                <div id="quizQuestions" class="quiz-questions"></div>
+
+                <!-- 跳过答题按钮 -->
+                <div style="text-align:center; margin-top:20px;">
+                    <button class="btn-secondary" id="seeSampleBtn">先看一下示例结果 👀</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== Step 3: 结果页面 ==================== -->
+        <div class="step" id="step3">
+            <div class="step-content">
+                <h1 class="step-title page-title">测试完成 <span class="title-emoji">🎉</span></h1>
+                <p class="result-intro">
+                    嗨，<span id="resultNickname" class="highlight"></span>（<span id="resultMbti" class="highlight"></span>），
+                    <br>欢迎来到你的基金 MBTI 小剧场 🎭
+                </p>
+                <p class="result-description">
+                    后面我们会根据你的回答，给出一个有趣的基金人格和基金类型推荐，
+                    <br>这一版先展示一个示例结果布局。
+                </p>
+
+                <!-- 结果卡片区域 -->
+                <div class="result-cards">
+                    <!-- 卡片1: 基金人格 -->
+                    <div class="result-card">
+                        <div class="result-card-icon">🐱</div>
+                        <h3>你的基金人格</h3>
+                        <p class="result-placeholder">这里将显示你的基金人格<br>（例如：佛系积蓄猫）</p>
+                    </div>
+
+                    <!-- 卡片2: 基金类型推荐 -->
+                    <div class="result-card">
+                        <div class="result-card-icon">📊</div>
+                        <h3>基金类型推荐</h3>
+                        <p class="result-placeholder">这里会推荐适合你的基金类型组合<br>例如：债券基金 70% + 货币基金 30%</p>
+                    </div>
+
+                    <!-- 卡片3: 风险提示 -->
+                    <div class="result-card warning-card">
+                        <div class="result-card-icon">⚠️</div>
+                        <h3>温馨提示</h3>
+                        <ul class="warning-list">
+                            <li>仅供娱乐和基础学习，不构成投资建议</li>
+                            <li>基金有风险，投资需谨慎</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 分流交互区域 -->
+                <div class="result-split-actions">
+                    <p class="result-split-hint">想让推荐更贴合你？再花 30 秒补充「关于这笔钱」～</p>
+                    <div class="result-split-buttons">
+                        <button type="button" id="btnSkipProfile" class="btn-secondary">先看推荐（跳过）</button>
+                        <button type="button" id="btnGoProfile" class="btn-primary">更精准（去补充）</button>
+                    </div>
+                    <p id="skipNote" class="skip-note" hidden>已跳过补充信息✅ 想更贴合的话，随时点「更精准（去补充）」补充即可。</p>
+                </div>
+
+                <!-- 重新开始按钮 -->
+                <button class="btn-primary btn-restart" id="restartBtn">重新开始 🔄</button>
+            </div>
+        </div>
+
+        <!-- ==================== Step 4: 关于这笔钱（财务画像） ==================== -->
+        <div class="step" id="step4">
+            <div class="step-content">
+                <h1 class="step-title page-title">关于这笔钱 <span class="title-emoji">💰</span></h1>
+                <p class="step-hint">我们了解一下你的情况，帮你找到适合的基金～</p>
+
+                <!-- 问题1: 年龄段 -->
+                <div class="question-group" data-question="ageRange">
+                    <label class="question-label">1. 你的年龄段 🎂</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="ageRange" value="under25">
+                            <span>25 岁以下</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="ageRange" value="25-35">
+                            <span>25 - 35 岁</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="ageRange" value="36-45">
+                            <span>36 - 45 岁</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="ageRange" value="46-60">
+                            <span>46 - 60 岁</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="ageRange" value="over60">
+                            <span>60 岁以上</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 问题2: 职业类型 -->
+                <div class="question-group" data-question="jobType">
+                    <label class="question-label">2. 你的职业 👔</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="jobType" value="employee">
+                            <span>上班族 / 公务员</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="jobType" value="freelancer">
+                            <span>自由职业 / 个体户</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="jobType" value="student">
+                            <span>学生</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="jobType" value="homemaker">
+                            <span>全职在家</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="jobType" value="retired">
+                            <span>已退休</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="jobType" value="other">
+                            <span>其他</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 问题3: 月收入范围 -->
+                <div class="question-group" data-question="incomeRange">
+                    <label class="question-label">3. 月收入大概范围 💵</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="incomeRange" value="under5k">
+                            <span>少于 5k</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="incomeRange" value="5k-10k">
+                            <span>5k - 1 万</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="incomeRange" value="10k-30k">
+                            <span>1 万 - 3 万</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="incomeRange" value="30k-50k">
+                            <span>3 万 - 5 万</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="incomeRange" value="over50k">
+                            <span>5 万以上</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 问题4: 投入金额 -->
+                <div class="question-group" data-question="lumpSumBudget">
+                    <label class="question-label">4. 这次打算投入多少 💴</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="lumpSumBudget" value="under1k">
+                            <span>1000 以下</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="lumpSumBudget" value="1k-5k">
+                            <span>1000 - 5000</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="lumpSumBudget" value="5k-20k">
+                            <span>5000 - 2 万</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="lumpSumBudget" value="20k-100k">
+                            <span>2 万 - 10 万</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="lumpSumBudget" value="over100k">
+                            <span>10 万以上</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 问题5: 每月定投 -->
+                <div class="question-group" data-question="monthlyContribution">
+                    <label class="question-label">5. 未来每个月会继续投吗 📅</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="monthlyContribution" value="none">
+                            <span>不会</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="monthlyContribution" value="irregular">
+                            <span>可能会，金额不固定</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="monthlyContribution" value="under1k">
+                            <span>会，少于 1000</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="monthlyContribution" value="1k-3k">
+                            <span>会，1000 - 3000</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="monthlyContribution" value="over3k">
+                            <span>会，3000 以上</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 问题6: 主要目的 -->
+                <div class="question-group" data-question="mainGoal">
+                    <label class="question-label">6. 这笔钱的主要目的 🎯</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="mainGoal" value="safety">
+                            <span>先别亏钱，安全最重要</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="mainGoal" value="growth">
+                            <span>想跑赢通胀，慢慢变多（财富增值）</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="mainGoal" value="majorExpense">
+                            <span>为了未来大额支出（买房、结婚、留学等）</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="mainGoal" value="retirement">
+                            <span>为了退休养老</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="mainGoal" value="experience">
+                            <span>就是想体验一下投资，玩一玩</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 问题7: 投资期限 -->
+                <div class="question-group" data-question="horizon">
+                    <label class="question-label">7. 打算放多久不动 ⏰</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="horizon" value="under1y">
+                            <span>1 年以内</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="horizon" value="1y-3y">
+                            <span>1 - 3 年</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="horizon" value="3y-5y">
+                            <span>3 - 5 年</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="horizon" value="over5y">
+                            <span>5 年以上</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 问题8: 流动性需求 -->
+                <div class="question-group" data-question="liquidityNeed">
+                    <label class="question-label">8. 需要随时拿出来吗 💸</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="liquidityNeed" value="high">
+                            <span>随时有可能要用到，最好很灵活</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="liquidityNeed" value="medium">
+                            <span>大概率短时间用不到，但希望比较好取出</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="liquidityNeed" value="low">
+                            <span>基本不急用，可以长期锁着</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 精准结果展示区域（由 JS 动态填充） -->
+                <div id="finalResult" class="final-result" style="display:none;"></div>
+            </div>
+        </div>
+
+        <!-- 底部导航按钮 -->
+        <div class="navigation">
+            <button class="btn-nav btn-prev" id="prevBtn" disabled>上一步</button>
+            <button class="btn-nav btn-next" id="nextBtn">下一步</button>
+        </div>
+    </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

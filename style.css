@@ -1,0 +1,1014 @@
+/* ==================== 全局样式 ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 定义马卡龙色系变量 */
+:root {
+    /* 马卡龙粉色 */
+    --macaron-pink: #FFB3BA;
+    --macaron-pink-light: #FFE4E6;
+    /* 马卡龙蓝色 */
+    --macaron-blue: #A8D8EA;
+    --macaron-blue-light: #E0F4FF;
+    /* 马卡龙黄色 */
+    --macaron-yellow: #FFF3B0;
+    --macaron-yellow-light: #FFF9DB;
+    /* 马卡龙紫色 */
+    --macaron-purple: #D4A5D9;
+    --macaron-purple-light: #F3E5F5;
+    /* 马卡龙绿色 */
+    --macaron-green: #B8E0D2;
+    --macaron-green-light: #E8F5F1;
+    /* 马卡龙橙色 */
+    --macaron-orange: #FFCFB3;
+    --macaron-orange-light: #FFF0E6;
+
+    /* 中性色 */
+    --text-primary: #5A5A5A;
+    --text-secondary: #8A8A8A;
+    --bg-color: #FFF9F5;
+    --card-bg: #FFFFFF;
+    --border-color: #E8E8E8;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* 全局基准字号放大 */
+html {
+    font-size: 18px;
+}
+
+body {
+    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    /* body 不再设置背景，背景移到 .pastel-background */
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+/* ==================== 外层容器：马卡龙背景 + 动效层 ==================== */
+.pastel-background {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 32px 16px;
+    /* 绚丽的马卡龙渐变背景 */
+    background: linear-gradient(
+        135deg,
+        #ffe1ec 0%,   /* 粉色 */
+        #e4f3ff 35%,  /* 浅蓝 */
+        #e9e5ff 70%,  /* 浅紫 */
+        #fff0e0 100%  /* 浅橙 */
+    );
+    position: relative;
+    overflow: hidden;
+}
+
+/* 左上角柔和光斑 - 粉色系（呼吸动效，增强可见度） */
+.pastel-background::before {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle at 40% 40%, rgba(255, 179, 186, 0.50), rgba(255, 228, 230, 0.28), transparent);
+    border-radius: 50%;
+    top: -150px;
+    left: -150px;
+    filter: blur(60px);
+    animation: breathe 20s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 右下角柔和光斑 - 蓝紫色系（呼吸动效，增强可见度） */
+.pastel-background::after {
+    content: "";
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle at 60% 60%, rgba(168, 216, 234, 0.40), rgba(224, 244, 255, 0.22), transparent);
+    border-radius: 50%;
+    bottom: -200px;
+    right: -200px;
+    filter: blur(80px);
+    animation: breathe 25s ease-in-out infinite alternate-reverse;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 呼吸动效 - 非常缓慢 */
+@keyframes breathe {
+    0% {
+        opacity: 0.6;
+        transform: scale(1) translate(0, 0);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05) translate(10px, -10px);
+    }
+    100% {
+        opacity: 0.7;
+        transform: scale(1.02) translate(-5px, 10px);
+    }
+}
+
+/* ==================== 背景动效层（泡泡、光点、流光） ==================== */
+.bg-effects {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* 不阻挡鼠标点击 */
+    z-index: 1; /* 在光斑层上方，主卡片下方 */
+    overflow: hidden;
+}
+
+/* 银河流光层：星云色带（大面积柔光） */
+.bg-effects::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    opacity: 0.55;
+    filter: blur(28px) saturate(1.35);
+    background:
+        /* 多层渐变叠加形成星云效果 */
+        radial-gradient(circle at 30% 40%, rgba(255, 179, 186, 0.15), transparent 50%),
+        radial-gradient(circle at 70% 60%, rgba(168, 216, 234, 0.12), transparent 50%),
+        radial-gradient(circle at 50% 80%, rgba(212, 165, 217, 0.10), transparent 50%),
+        conic-gradient(from 0deg at 50% 50%, rgba(255, 243, 176, 0.08), rgba(184, 224, 210, 0.08), rgba(255, 207, 179, 0.08), rgba(255, 179, 186, 0.08));
+    animation: nebulaFlow 45s ease-in-out infinite alternate;
+    will-change: background-position;
+}
+
+/* 银河流光层：细长流光带 */
+.bg-effects::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.35;
+    filter: blur(18px);
+    /* 细长流光带 */
+    background: repeating-linear-gradient(
+        120deg,
+        transparent 0px,
+        transparent 80px,
+        rgba(255, 255, 255, 0.12) 80px,
+        rgba(255, 255, 255, 0.18) 120px,
+        rgba(255, 255, 255, 0.12) 160px,
+        transparent 200px,
+        transparent 240px
+    );
+    animation: riverFlow 30s linear infinite;
+    will-change: background-position;
+}
+
+/* 星云缓慢漂移动画 */
+@keyframes nebulaFlow {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+        background-position: 0% 0%, 50% 50%, 100% 100%;
+    }
+    50% {
+        transform: translate(30px, 20px) rotate(3deg);
+        background-position: 50% 30%, 70% 70%, 30% 50%;
+    }
+    100% {
+        transform: translate(-20px, -10px) rotate(-2deg);
+        background-position: 100% 50%, 30% 30%, 70% 80%;
+    }
+}
+
+/* 银河流光流动动画 */
+@keyframes riverFlow {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 200% 200%;
+    }
+}
+
+/* 泡泡样式（颜色更深、对比度更高、更"实"） */
+.bg-bubble {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    /* 使用 CSS 变量控制位置、大小、透明度、时长、颜色 */
+    left: var(--x);
+    top: var(--y);
+    width: var(--s);
+    height: var(--s);
+    opacity: var(--o);
+    /* 三层渐变：高光 + 柔光 + 颜色（主体 92%，更实心） */
+    background:
+        /* 第一层：左上高光 */
+        radial-gradient(circle at 28% 28%, rgba(255, 255, 255, 0.70), rgba(255, 255, 255, 0) 55%),
+        /* 第二层：右下柔光 */
+        radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 60%),
+        /* 第三层：马卡龙颜色（主体 92%，更实） */
+        radial-gradient(circle at 30% 30%, var(--c), rgba(255, 255, 255, 0) 92%);
+    filter: blur(0.8px) saturate(1.25); /* 降低模糊让更实 */
+    mix-blend-mode: normal; /* normal 模式，对比最高 */
+    border: 1px solid rgba(255, 255, 255, 0.38); /* 柔和边缘 */
+    box-shadow: 0 0 55px rgba(0, 0, 0, 0.06), 0 0 35px rgba(255, 255, 255, 0.20); /* 增强对比 */
+    will-change: transform, opacity;
+    animation: floatBubble var(--d) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+    overflow: hidden; /* 确保贴纸不溢出 */
+}
+
+/* 泡泡上浮动画 - 跨越 140vh 高度，更明显的漂移 */
+@keyframes floatBubble {
+    0% {
+        transform: translate3d(-16px, 25vh, 0) scale(0.98);
+        opacity: var(--o);
+    }
+    50% {
+        transform: translate3d(18px, -55vh, 0) scale(1.02);
+        opacity: var(--o);
+    }
+    100% {
+        transform: translate3d(-12px, -140vh, 0) scale(1.06);
+        opacity: 0;
+    }
+}
+
+/* 星点/闪光样式（糖粉效果，增强可见度） */
+.bg-sparkle {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: var(--s);
+    height: var(--s);
+    border-radius: 999px;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 70%);
+    opacity: var(--o);
+    filter: blur(0.2px);
+    mix-blend-mode: screen;
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.70); /* 增强发光效果 */
+    will-change: transform, opacity;
+    animation: twinkle var(--d) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+/* 十字星闪光（15% 的星点会有十字光芒） */
+.bg-sparkle-plus {
+    position: relative;
+}
+
+.bg-sparkle-plus::before,
+.bg-sparkle-plus::after {
+    content: '';
+    position: absolute;
+    background: rgba(255, 255, 255, 0.40); /* 提高十字线透明度 */
+    border-radius: 999px;
+    pointer-events: none;
+}
+
+/* 水平线 */
+.bg-sparkle-plus::before {
+    width: 100%;
+    height: 1px;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+/* 垂直线 */
+.bg-sparkle-plus::after {
+    width: 1px;
+    height: 100%;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+}
+
+/* 星点闪烁动画（提高最低亮度到 0.22） */
+@keyframes twinkle {
+    0%, 100% {
+        transform: scale(0.7);
+        opacity: 0.22; /* 提高到 0.22 */
+    }
+    40% {
+        transform: scale(1.0);
+        opacity: var(--o);
+    }
+    60% {
+        transform: scale(0.85);
+        opacity: calc(var(--o) * 0.6);
+    }
+}
+
+/* 减少动效时隐藏所有背景动画 */
+@media (prefers-reduced-motion: reduce) {
+    .pastel-background::before,
+    .pastel-background::after {
+        animation: none;
+        opacity: 0.5;
+    }
+
+    .bg-bubble,
+    .bg-sparkle,
+    .bubble-sticker {
+        animation: none;
+    }
+}
+
+/* ==================== 主卡片（白色内容容器） ==================== */
+.container,
+.main-card {
+    /* 大屏上占据大部分屏幕宽度，最大 1200px，否则占 94% */
+    width: min(1200px, 94vw);
+    background: var(--card-bg);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    /* 增大左右内边距，让内容更宽敞 */
+    padding: 40px 64px;
+    position: relative;
+    margin: 40px auto;
+    z-index: 2; /* 确保在所有背景层上方 */
+    /* 卡片浮起效果 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* ==================== 进度条区域 ==================== */
+.progress-section {
+    margin-bottom: 30px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--macaron-pink-light);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--macaron-pink), var(--macaron-purple), var(--macaron-blue));
+    width: 25%;
+    border-radius: 10px;
+    /* 进度条动画 */
+    transition: width 0.4s ease;
+}
+
+.step-indicator {
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+#currentStep {
+    font-weight: 700;
+    color: var(--macaron-purple);
+    font-size: 16px;
+}
+
+/* ==================== 错误提示 ==================== */
+.error-message {
+    background: var(--macaron-orange-light);
+    border: 2px solid var(--macaron-orange);
+    border-radius: 12px;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    color: #D9774A;
+    font-size: 14px;
+    text-align: center;
+    /* 错误提示动画 */
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.error-message.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==================== 步骤内容区域 ==================== */
+.step {
+    display: none;
+    /* 步骤切换动画 */
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.step.active {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.step-content {
+    /* 自适应高度：视窗高度减去固定头部空间（260px） */
+    max-height: calc(100vh - 260px);
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* 滚动条美化 */
+.step-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.step-content::-webkit-scrollbar-track {
+    background: var(--macaron-pink-light);
+    border-radius: 10px;
+}
+
+.step-content::-webkit-scrollbar-thumb {
+    background: var(--macaron-purple);
+    border-radius: 10px;
+}
+
+/* ==================== 标题和提示文字 ==================== */
+.step-title {
+    font-size: 26px;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+/* 彩色艺术字标题（页面主标题） */
+.page-title {
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    line-height: 1.15;
+    background: linear-gradient(90deg, #ff7fb0 0%, #a78bfa 45%, #6ee7ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 10px rgba(255, 140, 190, 0.18);
+}
+
+/* 标题中的 emoji：恢复原色，不受渐变影响 */
+.title-emoji {
+    color: initial;
+    background: none;
+    -webkit-text-fill-color: initial;
+    -webkit-text-stroke: 0;
+    text-shadow: none;
+    display: inline-block;
+}
+
+.step-hint {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+/* ==================== 表单元素 ==================== */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    display: block;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.text-input,
+.select-input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 16px;
+    color: var(--text-primary);
+    background: var(--bg-color);
+    /* 输入框动画 */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.text-input:focus,
+.select-input:focus {
+    outline: none;
+    border-color: var(--macaron-purple);
+    box-shadow: 0 0 0 4px rgba(212, 165, 217, 0.2);
+}
+
+/* ==================== 问题组 ==================== */
+.question-group {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.question-group:last-child {
+    border-bottom: none;
+}
+
+.question-label {
+    display: block;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* 马卡龙风格单选按钮 */
+.radio-option {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--bg-color);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    cursor: pointer;
+    /* 单选按钮动画 */
+    transition: all 0.3s ease;
+}
+
+.radio-option:hover {
+    border-color: var(--macaron-blue);
+    background: var(--macaron-blue-light);
+    transform: translateX(3px);
+}
+
+.radio-option input[type="radio"] {
+    margin-right: 10px;
+    accent-color: var(--macaron-purple);
+    width: 18px;
+    height: 18px;
+}
+
+.radio-option span {
+    font-size: 15px;
+    color: var(--text-primary);
+}
+
+/* 选中状态 */
+.radio-option:has(input:checked),
+/* JS 兜底样式（兼容不支持 :has 的浏览器） */
+.radio-option.selected {
+    border-color: var(--macaron-purple);
+    background: var(--macaron-purple-light);
+}
+
+/* ==================== 占位卡片 ==================== */
+.placeholder-card {
+    background: linear-gradient(135deg, var(--macaron-blue-light), var(--macaron-green-light));
+    border: 2px solid var(--macaron-blue);
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+}
+
+.placeholder-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.placeholder-card h3 {
+    font-size: 18px;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+}
+
+.placeholder-card p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+}
+
+.placeholder-list {
+    text-align: left;
+    margin: 20px 0;
+    padding-left: 20px;
+}
+
+.placeholder-list li {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+/* ==================== 结果页面 ==================== */
+.result-intro {
+    font-size: 17px;
+    color: var(--text-primary);
+    text-align: center;
+    line-height: 1.8;
+    margin-bottom: 10px;
+}
+
+.highlight {
+    font-weight: 700;
+    color: var(--macaron-purple);
+    font-size: 19px;
+}
+
+.result-description {
+    font-size: 15px;
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+/* 结果卡片 */
+.result-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.result-card {
+    background: var(--bg-color);
+    border: 2px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    /* 结果卡片动画 */
+    transition: all 0.3s ease;
+}
+
+.result-card:hover {
+    border-color: var(--macaron-pink);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 179, 186, 0.3);
+}
+
+.result-card-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.result-card h3 {
+    font-size: 17px;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.result-placeholder {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* 警告卡片 */
+.warning-card {
+    background: var(--macaron-yellow-light);
+    border-color: var(--macaron-yellow);
+}
+
+.warning-list {
+    list-style: none;
+    padding: 0;
+}
+
+.warning-list li {
+    font-size: 14px;
+    color: #B8860B;
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.warning-list li:last-child {
+    margin-bottom: 0;
+}
+
+/* ==================== 按钮样式 ==================== */
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* 主按钮 */
+.btn-primary {
+    background: linear-gradient(135deg, var(--macaron-pink), var(--macaron-purple));
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    /* 按钮动画 */
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px rgba(212, 165, 217, 0.4);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+/* 导航按钮 */
+.btn-nav {
+    flex: 1;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    /* 按钮动画 */
+    transition: all 0.3s ease;
+}
+
+.btn-prev {
+    background: var(--macaron-blue-light);
+    color: var(--text-primary);
+    border: 2px solid var(--macaron-blue);
+}
+
+.btn-prev:hover:not(:disabled) {
+    background: var(--macaron-blue);
+    color: white;
+    transform: scale(1.03);
+}
+
+.btn-prev:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-next {
+    background: linear-gradient(135deg, var(--macaron-purple), var(--macaron-pink));
+    color: white;
+    border: none;
+}
+
+.btn-next:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px rgba(212, 165, 217, 0.4);
+}
+
+/* 次要按钮 */
+.btn-secondary {
+    background: white;
+    color: var(--text-primary);
+    border: 2px solid var(--macaron-blue);
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+    /* 按钮动画 */
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: var(--macaron-blue);
+    color: white;
+    transform: scale(1.03);
+}
+
+/* 重新开始按钮（带动效，但不产生外部阴影条） */
+.btn-restart {
+    width: 100%;
+    margin-top: 10px;
+    background: linear-gradient(135deg, var(--macaron-green), var(--macaron-blue));
+    background-size: 200% 200%;
+    position: relative;
+    overflow: hidden; /* 让内部光带不溢出 */
+    transition: transform 0.25s ease, filter 0.25s ease, background-position 0.6s ease;
+}
+
+/* 内部"光带"扫过（不靠 box-shadow） */
+.btn-restart::after {
+    content: "";
+    position: absolute;
+    top: -30%;
+    left: -60%;
+    width: 60%;
+    height: 160%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transform: rotate(20deg);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+}
+
+.btn-restart:hover {
+    transform: translateY(-1px);     /* 轻微上浮，不用 scale */
+    filter: brightness(1.04);
+    background-position: 100% 0%;
+}
+
+.btn-restart:hover::after {
+    opacity: 1;
+    animation: restartSheen 0.9s ease forwards;
+}
+
+.btn-restart:active {
+    transform: translateY(0px);
+    filter: brightness(0.98);
+}
+
+@keyframes restartSheen {
+    0%   { left: -60%; }
+    100% { left: 120%; }
+}
+
+/* 结果页内容区底部多留空间，避免阴影被裁切 */
+#step3 .step-content {
+    padding-bottom: 24px;
+}
+
+/* ==================== 结果页分流交互 ==================== */
+.result-split-actions {
+    margin-top: 18px;
+    padding: 20px;
+    background: var(--bg-color);
+    border-radius: 12px;
+    border: 2px dashed var(--border-color);
+}
+
+.result-split-hint {
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.result-split-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    align-items: stretch;
+}
+
+/* 结果页分流按钮：同宽同高同对齐 */
+.result-split-buttons > button {
+    flex: 1;
+    margin-top: 0 !important;   /* 覆盖 .btn-secondary 的 margin-top */
+    min-height: 52px;           /* 统一高度 */
+    padding: 14px 18px;         /* 统一 padding（避免一高一矮） */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.result-split-buttons .btn-primary,
+.result-split-buttons .btn-secondary {
+    flex: 1;
+    min-width: 140px;
+}
+
+.skip-note {
+    margin-top: 10px;
+    color: #6b6b6b;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* ==================== 泡泡内部贴纸（星星 + 马卡龙） ==================== */
+
+/* 贴纸容器 */
+.bubble-sticker {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0.8; /* 默认透明度，会被 JS 覆盖 */
+    will-change: transform;
+    animation: stickerFloat 8s ease-in-out infinite;
+    animation-delay: var(--sticker-delay, 0s);
+}
+
+/* 星星贴纸（用 clip-path 画星星，更明显） */
+.bubble-sticker--star {
+    width: var(--sticker-size, 20px);
+    height: var(--sticker-size, 20px);
+    background: rgba(255, 255, 255, 0.95); /* 提高亮度 */
+    clip-path: polygon(
+        50% 0%,
+        61% 35%,
+        98% 35%,
+        68% 57%,
+        79% 91%,
+        50% 70%,
+        21% 91%,
+        32% 57%,
+        2% 35%,
+        39% 35%
+    );
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.55)); /* 增强微光 */
+}
+
+/* 贴纸轻微漂浮动画 */
+@keyframes stickerFloat {
+    0%, 100% {
+        transform: rotate(var(--sticker-rotate, 0deg)) translate(0, 0);
+    }
+    50% {
+        transform: rotate(calc(var(--sticker-rotate, 0deg) + 5deg)) translate(2px, -2px);
+    }
+}
+
+/* ==================== 响应式设计 ==================== */
+
+/* 平板尺寸（768px 以下） */
+@media (max-width: 768px) {
+    /* 移动端基准字号稍小 */
+    html {
+        font-size: 17px;
+    }
+
+    /* 移动端标题字号调整 */
+    .page-title {
+        font-size: 32px;
+    }
+
+    .pastel-background {
+        padding: 20px 12px;
+    }
+
+    .container,
+    .main-card {
+        /* 平板上卡片几乎占满屏幕 */
+        width: 96vw;
+        max-width: 96vw;
+        margin: 20px auto;
+        padding: 30px 28px;
+    }
+
+    .step-content {
+        max-height: 450px;
+    }
+
+    .result-cards {
+        gap: 12px;
+    }
+}
+
+/* 手机尺寸（480px 以下） */
+@media (max-width: 480px) {
+    .pastel-background {
+        padding: 0;
+    }
+
+    .container,
+    .main-card {
+        /* 手机上卡片完全占满屏幕宽度 */
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 24px 16px;
+        border-radius: 20px 20px 0 0; /* 只有顶部圆角，贴合底部 */
+    }
+
+    .step-title {
+        font-size: 22px;
+    }
+
+    .step-content {
+        max-height: 400px;
+    }
+
+    .result-card {
+        padding: 15px;
+    }
+
+    .navigation {
+        flex-direction: column;
+    }
+
+    .btn-nav {
+        width: 100%;
+    }
+}
